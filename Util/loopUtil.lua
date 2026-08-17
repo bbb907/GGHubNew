@@ -10,20 +10,20 @@ function loops:CreateLoop(name, callback, interval)
 	end
 	
 	local funcs = {}
-	local floop = coroutine.create(function()
-		while task.wait(interval) do
+	local floop = true
+		
+	task.spawn(function()
+		while task.wait(interval) and floop do
 			callback()
 		end
 	end)
 	
 	function funcs:Unbind()
 		createdLoops[name] = nil
-		floop.close()
+		floop = false
 	end
 	
 	createdLoops[name] = funcs
-	
-	floop.resume()
 	
 	return funcs
 end
