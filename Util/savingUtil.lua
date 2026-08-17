@@ -84,7 +84,7 @@ end
 
 function saving:LoadAllProfiles()
 	for _,v in pairs(listfiles(folderPath)) do
-		saving:LoadProfile(v)
+		saving:LoadProfile(folderPath.."/"..v)
 	end
 end
 
