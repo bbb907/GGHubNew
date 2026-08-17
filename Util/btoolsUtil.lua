@@ -40,6 +40,17 @@ function btools:DestroyObject(obj)
 	return false
 end
 
+function btools:DestroyManyObjects(objs)
+	local remote = fetchRemote()
+
+	if remote then
+		remote:InvokeServer("Remove",objs)
+		return true
+	end
+
+	return false
+end
+
 function btools:SetCollision(obj, state)
 	local remote = fetchRemote()
 
