@@ -78,12 +78,8 @@ end
 
 function saving:LoadProfile(path)
 	local s,e = pcall(function()
-		table.insert(data_profiles,httpService:JSONDecode(readfile(path)))
+		data_profiles[string.split(path,"\\")[2]] = httpService:JSONDecode(readfile(path))
 	end)
-
-	if e then
-		print(e)
-	end
 end
 
 function saving:LoadAllProfiles()
