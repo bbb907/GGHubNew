@@ -6,7 +6,7 @@ local folderPath
 
 function saving:init(fp)
 	
-	if not writefile or not listfiles or not readfile or not makefolder or not isfolder then
+	if not writefile or not listfiles or not readfile or not makefolder or not isfolder or not isfile then
 		warn("SavingUtil: Your bad executor has like 0 unc, get a new one.")
 		return
 	end
@@ -84,6 +84,13 @@ end
 
 function saving:LoadAllProfiles()
 	for _,v in pairs(listfiles(folderPath)) do
+		v = string.gsub(v,"\\","/")
+		
+		if not isfile(v) then
+			warn("Invalid file path: "..v)
+			continue
+		end
+		
 		saving:LoadProfile(v)
 	end
 end
