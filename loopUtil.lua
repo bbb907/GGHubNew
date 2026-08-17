@@ -27,4 +27,10 @@ function loops:CreateLoop(name, callback, interval)
 	return funcs
 end
 
-return loops
+function loops:UnbindLoop(name)
+	if createdLoops[name] ~= nil then
+		createdLoops[name]:Unbind()
+	else
+		warn("Loop with name "..name.." does not exist!")
+	end
+end
