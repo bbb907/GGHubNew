@@ -80,12 +80,15 @@ function saving:LoadProfile(path)
 	local s,e = pcall(function()
 		table.insert(data_profiles,httpService:JSONDecode(readfile(path)))
 	end)
+
+	if e then
+		print(e)
+	end
 end
 
 function saving:LoadAllProfiles()
 	for _,v in pairs(listfiles(folderPath)) do
-		print(folderPath.."/"..v)
-		saving:LoadProfile(folderPath.."/"..v)
+		saving:LoadProfile(v)
 	end
 end
 
