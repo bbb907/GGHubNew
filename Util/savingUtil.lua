@@ -39,9 +39,8 @@ function getFuncs(name)
 		
 		saving = true
 		
-		writefile(folderPath.."/"..name,httpService:JSONEncode(data_profiles[name]))
-		
 		task.delay(2,function()
+			writefile(folderPath.."/"..name,httpService:JSONEncode(data_profiles[name]))
 			saving = false
 		end)
 	end
