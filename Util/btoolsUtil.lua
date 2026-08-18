@@ -262,7 +262,7 @@ function btools:RemoveManyLights(objs)
 		local args = {}
 		
 		for _,v in pairs(objs) do
-			if not v["PointLight"] then
+			if v["PointLight"] == nil then
 				continue
 			end
 			
