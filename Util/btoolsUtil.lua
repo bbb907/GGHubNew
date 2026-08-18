@@ -261,12 +261,12 @@ function btools:RemoveManyLights(objs)
 		
 		local args = {}
 		
-		for _,v in pairs(objs) do
-			if v["PointLight"] == nil then
+		for _,v: BasePart in pairs(objs) do
+			if v:FindFirstChildOfClass("PointLight") == nil then
 				continue
 			end
 			
-			table.insert(args,v["PointLight"])
+			table.insert(args,v:FindFirstChildOfClass("PointLight"))
 		end
 
 		remote:InvokeServer("Remove",args)
