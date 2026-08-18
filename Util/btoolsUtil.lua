@@ -126,4 +126,23 @@ function btools:SetManyCFrame(objs, cf)
 	return false
 end
 
+function btools:SetAnchored(obj,state)
+	local remote = fetchRemote()
+		
+	if remote then
+		remote:InvokeServer(table.unpack({
+			[1] = "SyncAnchor",
+			[2] = {
+				[1] = {
+					["Part"] = obj,
+					["Anchored"] = state,
+				},
+			},
+		}))
+		return true
+	end
+	
+	return false
+end
+
 return btools
