@@ -145,4 +145,136 @@ function btools:SetAnchored(obj,state)
 	return false
 end
 
+function btools:CreateLight(obj,range,brightness)
+	local remote = fetchRemote()
+
+	if remote then
+		remote:InvokeServer(table.unpack({
+			[1] = "CreateLights",
+			[2] = {
+				[1] = {
+					["Part"] = obj,
+					["LightType"] = "PointLight",
+				},
+			},
+		}))
+		task.wait(0.01)
+		remote:InvokeServer(table.unpack({
+			[1] = "SyncLighting",
+			[2] = {
+				[1] = {
+					["Part"] = workspace.Part,
+					["LightType"] = "PointLight",
+					["Range"] = range,
+				},
+			},
+		}))
+		task.wait(0.01)
+		remote:InvokeServer(table.unpack({
+			[1] = "SyncLighting",
+			[2] = {
+				[1] = {
+					["Part"] = workspace.Part,
+					["LightType"] = "PointLight",
+					["Brightness"] = brightness,
+				},
+			},
+		}))
+		
+		return true
+	end
+	
+	return false
+end
+
+function btools:CreateManyLights(objs,range,brightness)
+	local remote = fetchRemote()
+	
+	local createLightArgs = {}
+	
+	for _,v in pairs(objs) do
+		table.insert(createLightArgs,{
+			["Part"] = v,
+			["LightType"] = "PointLight",
+		})
+	end
+	
+	local rangeLightArgs = {}
+	
+	for _,v in pairs(objs) do
+		table.insert(rangeLightArgs,{
+			["Part"] = v,
+			["LightType"] = "PointLight",
+			["Range"] = range,
+		})
+	end
+	
+	local brightnessLightArgs = {}
+	
+	for _,v in pairs(objs) do
+		table.insert(brightnessLightArgs,{
+			["Part"] = v,
+			["LightType"] = "PointLight",
+			["Brightness"] = brightness,
+		})
+	end
+	
+	if remote then
+		remote:InvokeServer("CreateLights",createLightArgs)
+		task.wait(0.01)
+		remote:InvokeServer("SyncLighting",rangeLightArgs)
+		task.wait(0.01)
+		remote:InvokeServer("SyncLighting",brightnessLightArgs)
+
+		return true
+	end
+
+	return false
+end
+
+function btools:RemoveLights(obj)
+	local remote = fetchRemote()
+
+	if remote then
+		
+		if not obj["PointLight"] then
+			return false
+		end
+		
+		remote:InvokeServer(table.unpack({
+			[1] = "Remove",
+			[2] = {
+				[1] = obj["PointLight"],
+			},
+		}))
+		
+		return true
+	end
+	
+	return false
+end
+
+function btools:RemoveManyLights(objs)
+	local remote = fetchRemote()
+
+	if remote then
+		
+		local args = {}
+		
+		for _,v in pairs(objs) do
+			if not v["PointLight"] then
+				continue
+			end
+			
+			table.insert(args,v["PointLight"])
+		end
+
+		remote:InvokeServer("Remove",args)
+
+		return true
+	end
+
+	return false
+end
+
 return btools
