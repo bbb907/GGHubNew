@@ -277,4 +277,53 @@ function btools:RemoveManyLights(objs)
 	return false
 end
 
+function btools:MoveObject(obj,cf)
+	local remote = fetchRemote()
+
+	if remote then
+		remote:InvokeServer(table.unpack({
+			[1] = "SyncMove",
+			[2] = {
+				[1] = {
+					["Part"] = obj,
+					["CFrame"] = cf,
+				},
+			},
+		}))
+		
+		return true
+	end
+	
+	return false
+end
+
+function btools:MakePart(loc)
+	local remote = fetchRemote()
+
+	if remote then
+		remote:InvokeServer(table.unpack({
+			[1] = "CreatePart",
+			[2] = "Normal",
+			[3] = loc,
+			[4] = workspace,
+		}))
+		
+		local part = nil
+		local time = tick()
+		
+		while not part and tick() - time < 3 do
+			for _,v in pairs(workspace:GetChildren()) do
+				if v:IsA("BasePart") and v.CFrame == loc then
+					part = v
+				end
+			end
+			task.wait()
+		end
+		
+		return part
+	end
+	
+	return false
+end
+
 return btools
