@@ -411,8 +411,6 @@ function btools:ScalePart(scaleInfo)
 	local obj = scaleInfo.Part
 	
 	if remote then
-		local newCF = obj.CFrame * CFrame.new(AxisPositioningMultipliers[scaleInfo.Face] * scaleInfo.Distance / 2)
-		
 		remote:InvokeServer(table.unpack({
 			[1] = "SyncResize",
 			[2] = {
