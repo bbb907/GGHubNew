@@ -1,4 +1,6 @@
-local btools = {}
+local btools = {
+	scaleInfo = {}
+}
 
 function fetchRemote()
 	local btools = fetchBtools()
@@ -324,6 +326,89 @@ function btools:MakePart(loc)
 	end
 	
 	return false
+end
+
+local AxisPositioningMultipliers = {
+	[Enum.NormalId.Top] = Vector3.new(0, 1, 0),
+	[Enum.NormalId.Bottom] = Vector3.new(0, -1, 0),
+	[Enum.NormalId.Front] = Vector3.new(0, 0, -1),
+	[Enum.NormalId.Back] = Vector3.new(0, 0, 1),
+	[Enum.NormalId.Left] = Vector3.new(-1, 0, 0),
+	[Enum.NormalId.Right] = Vector3.new(1, 0, 0)
+}
+
+local AxisSizeMultipliers = {
+	[Enum.NormalId.Top] = Vector3.new(0, 1, 0);
+	[Enum.NormalId.Bottom] = Vector3.new(0, 1, 0);
+	[Enum.NormalId.Front] = Vector3.new(0, 0, 1);
+	[Enum.NormalId.Back] = Vector3.new(0, 0, 1);
+	[Enum.NormalId.Left] = Vector3.new(1, 0, 0);
+	[Enum.NormalId.Right] = Vector3.new(1, 0, 0);
+}
+
+local FaceAxisNames = {
+	[Enum.NormalId.Top] = 'Y',
+	[Enum.NormalId.Bottom] = 'Y',
+	[Enum.NormalId.Front] = 'Z',
+	[Enum.NormalId.Back] = 'Z',
+	[Enum.NormalId.Left] = 'X',
+	[Enum.NormalId.Right] = 'X',
+}
+
+function btools.scaleInfo.new(obj)
+	local Face = Enum.NormalId.Top
+	local Distance = 1
+	local BothDirections = false
+	
+	return {
+		build = function()
+			if BothDirections then
+				Distance = Distance * 2
+			end
+
+			local AxisSizeMultiplier = AxisSizeMultipliers[Face]
+			local IncrementVector = Distance * AxisSizeMultiplier
+			local AxisName = FaceAxisNames[Face]
+			local TargetSize = obj.Size[AxisName] + Distance
+			local newSize = obj.Size + IncrementVector
+			
+			local newcf = nil
+			
+			if not BothDirections then
+				newcf = obj.CFrame * CFrame.new(AxisPositioningMultipliers[Face] * Distance / 2)
+			else
+				newcf = obj.CFrame
+			end
+			
+			return {
+				["Part"] = obj,
+				["CFrame"] = newcf,
+				["Size"] = newSize
+			}
+		end,
+	}
+end
+
+
+function btools:ScalePart(scaleInfo)
+	local remote = fetchRemote()
+	
+	local obj = scaleInfo.Part
+	
+	if remote then
+		local newCF = obj.CFrame * CFrame.new(AxisPositioningMultipliers[Face] * Distance / 2)
+		
+		remote:InvokeServer(table.unpack({
+			[1] = "SyncResize",
+			[2] = {
+				[1] = {
+					["Part"] = obj,
+					["CFrame"] = scaleInfo.CFrame,
+					["Size"] = scaleInfo.Size,
+				},
+			},
+		}))
+	end
 end
 
 return btools
