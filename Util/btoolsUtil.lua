@@ -360,7 +360,8 @@ function btools.scaleInfo.new(obj)
 	local Distance = 1
 	local BothDirections = false
 	
-	return {
+	local funcs
+	funcs = {
 		build = function()
 			if BothDirections then
 				Distance = Distance * 2
@@ -371,22 +372,36 @@ function btools.scaleInfo.new(obj)
 			local AxisName = FaceAxisNames[Face]
 			local TargetSize = obj.Size[AxisName] + Distance
 			local newSize = obj.Size + IncrementVector
-			
+
 			local newcf = nil
-			
+
 			if not BothDirections then
 				newcf = obj.CFrame * CFrame.new(AxisPositioningMultipliers[Face] * Distance / 2)
 			else
 				newcf = obj.CFrame
 			end
-			
+
 			return {
 				["Part"] = obj,
 				["CFrame"] = newcf,
 				["Size"] = newSize
 			}
 		end,
+		setDistance = function(a)
+			Distance = a
+			return funcs
+		end,
+		setFace = function(a)
+			Face = a
+			return funcs
+		end,
+		setBothDirections = function(a)
+			BothDirections = a 
+			return funcs
+		end,
 	}
+	
+	return funcs
 end
 
 
