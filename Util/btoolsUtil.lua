@@ -313,7 +313,7 @@ function btools:MakePart(loc)
 		local part = nil
 		local tim = tick()
 		
-		while not part and tick() - tim < 3 do
+		while part == nil and tick() - tim < 3 do
 			for _,v in pairs(workspace:GetChildren()) do
 				if v:IsA("BasePart") and v.CFrame == loc then
 					part = v
