@@ -3,14 +3,14 @@ local btools = {
 }
 
 function fetchRemote()
-	local btools = fetchBtools()
+	local btools = btools.fetchBtools()
 	
 	if btools then
 		return btools.SyncAPI.ServerEndpoint
 	end
 end
 
-function fetchBtools()
+function btools.fetchBtools()
 	for _,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
 		if v:IsA("Tool") and v:FindFirstChild("SyncAPI") then
 			return v
@@ -311,11 +311,12 @@ function btools:MakePart(loc)
 		}))
 		
 		local part = nil
-		local time = tick()
+		local tim = tick()
 		
-		while not part and tick() - time < 3 do
+		while not part and tick() - tim < 3 do
 			for _,v in pairs(workspace:GetChildren()) do
 				if v:IsA("BasePart") and v.CFrame == loc then
+					print(v)
 					part = v
 				end
 			end
