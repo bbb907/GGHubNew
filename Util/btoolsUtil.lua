@@ -328,6 +328,22 @@ function btools:MakePart(loc)
 	return false
 end
 
+function btools:RotatePart(part,cf)
+	local remote = fetchRemote()
+	
+	if remote then
+		remote:InvokeServer(table.unpack({
+			[1] = "SyncRotate",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["CFrame"] = cf,
+				},
+			},
+		}))
+	end
+end
+
 local AxisPositioningMultipliers = {
 	[Enum.NormalId.Top] = Vector3.new(0, 1, 0),
 	[Enum.NormalId.Bottom] = Vector3.new(0, -1, 0),
