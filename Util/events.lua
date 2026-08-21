@@ -5,15 +5,17 @@ local listeners = {}
 local plr = game.Players.LocalPlayer
 local char = plr.Character or plr.CharacterAdded:Wait()
 
-local deathEvents = {}
-local respawnEvents = {}
+local events = {
+	["Death"] = {},
+	["Respawn"] = {}
+}
 
-function events.onDead(func)
-	table.insert(deathEvents,func)
+function events.addEvent(name,typ,func)
+	events[typ][name] = func
 end
 
-function events.onRespawn(func)
-	table.insert(respawnEvents,func)
+function events.removeEvent(name,typ)
+	events[typ][name] = nil
 end
 
 local function createDeathEvent()
@@ -22,7 +24,7 @@ local function createDeathEvent()
 	end
 	
 	listeners["Death"] = char:WaitForChild("Humanoid").Died:Connect(function()
-		for _,v in pairs(deathEvents) do
+		for _,v in pairs(events["Death"]) do
 			v()
 		end
 		
@@ -30,7 +32,7 @@ local function createDeathEvent()
 		
 		task.wait()
 		
-		for _,v in pairs(respawnEvents) do
+		for _,v in pairs(events["Respawn"]) do
 			v()
 		end
 		
