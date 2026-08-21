@@ -40,6 +40,8 @@ local function createDeathEvent()
 	end)
 end
 
-createDeathEvent()
+function events.init()
+	createDeathEvent()
+end
 
 return events
