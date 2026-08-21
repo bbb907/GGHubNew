@@ -2,7 +2,6 @@ local HttpService = game:GetService("HttpService")
 Serialization = {};
 
 -- Import services
-local Tool = loadstring(game:HttpGet("https://raw.githubusercontent.com/bbb907/GGHubNew/refs/heads/main/Util/btoolsUtil.lua"))().fetchBtools()
 local Support = loadstring(game:HttpGet("https://raw.githubusercontent.com/bbb907/GGHubNew/refs/heads/main/Extra/SerialiserHelper.lua"))()
 Support.ImportServices();
 
