@@ -316,7 +316,6 @@ function btools:MakePart(loc)
 		while not part and tick() - tim < 3 do
 			for _,v in pairs(workspace:GetChildren()) do
 				if v:IsA("BasePart") and v.CFrame == loc then
-					print(v)
 					part = v
 				end
 			end
