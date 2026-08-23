@@ -14,15 +14,18 @@ function loops:CreateLoop(name, callback, interval)
 	
 	local function loop()
 		task.spawn(function()
-			while task.wait(interval) and floop do
-				callback()
+			local s,e = pcall(function()
+				while task.wait(interval) and floop do
+					callback()
+				end
+			end)
+			
+			if floop then
+				loop()
 			end
 		end)
-		if floop then
-			loop()
-		end
 	end
-		
+	
 	loop()
 	
 	function funcs:Unbind()
