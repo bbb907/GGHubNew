@@ -11,20 +11,19 @@ function loops:CreateLoop(name, callback, interval)
 	
 	local funcs = {}
 	local floop = true
-		
-	task.spawn(function()
-		local function loop()
+	
+	local function loop()
+		task.spawn(function()
 			while task.wait(interval) and floop do
 				callback()
 			end
-			
-			if floop then
-				loop()
-			end
+		end)
+		if floop then
+			loop()
 		end
+	end
 		
-		loop()
-	end)
+	loop()
 	
 	function funcs:Unbind()
 		createdLoops[name] = nil
