@@ -13,9 +13,17 @@ function loops:CreateLoop(name, callback, interval)
 	local floop = true
 		
 	task.spawn(function()
-		while task.wait(interval) and floop do
-			callback()
+		local function loop()
+			while task.wait(interval) and floop do
+				callback()
+			end
+			
+			if floop then
+				loop()
+			end
 		end
+		
+		loop()
 	end)
 	
 	function funcs:Unbind()
