@@ -342,6 +342,34 @@ function btools:MakePart(loc)
 	return false
 end
 
+function btools:SetLocked(part,state)
+	local remote = fetchRemote()
+	
+	if remote then
+		remote:InvokeServer(table.unpack({
+			[1] = "SetLocked",
+			[2] = {
+				[1] = part,
+			},
+			[3] = state,
+		}))
+	end
+end
+
+function btools:SetManyLocked(parts,state)
+	local remote = fetchRemote()
+
+	if remote then
+		local data = {}
+		
+		for _,v in pairs(parts) do
+			table.insert(data,v)
+		end
+		
+		remote:InvokeServer("SetLocked",data,state)
+	end
+end
+
 function btools:RotatePart(part,cf)
 	local remote = fetchRemote()
 	
