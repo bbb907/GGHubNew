@@ -358,6 +358,14 @@ function btools:RotatePart(part,cf)
 	end
 end
 
+function btools:RotateManyParts(partRotationInfo)
+	local remote = fetchRemote()
+
+	if remote then
+		remote:InvokeServer("SyncRotate",partRotationInfo)
+	end
+end
+
 local AxisPositioningMultipliers = {
 	[Enum.NormalId.Top] = Vector3.new(0, 1, 0),
 	[Enum.NormalId.Bottom] = Vector3.new(0, -1, 0),
