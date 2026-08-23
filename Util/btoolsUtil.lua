@@ -26,6 +26,20 @@ function btools.fetchBtools()
 	return nil
 end
 
+function btools:GetCurrentSelections()
+	local selections = {}
+	
+	for _,v in pairs(game.Players.LocalPlayer.PlayerGui:GetDescendants()) do
+		if v.Name == "BTSelectionBox" and v:IsA("SelectionBox") then
+			if v.Adornee ~= nil then
+				table.insert(selections, v.Adornee)
+			end
+		end
+	end
+	
+	return selections
+end
+
 function btools:DestroyObject(obj)
 	local remote = fetchRemote()
 	
