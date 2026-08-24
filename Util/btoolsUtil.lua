@@ -183,6 +183,30 @@ function btools:SetAnchored(obj,state)
 	return false
 end
 
+function btools:CloneObject(obj,parent)
+	local remote = fetchRemote()
+
+	if remote then
+		remote:InvokeServer("Clone",{obj},parent)
+
+		return true
+	end
+
+	return false
+end
+
+function btools:CloneObjects(objs,parent)
+	local remote = fetchRemote()
+
+	if remote then
+		remote:InvokeServer("Clone",objs,parent)
+
+		return true
+	end
+
+	return false
+end
+
 function btools:CreateLight(obj,range,brightness)
 	local remote = fetchRemote()
 
