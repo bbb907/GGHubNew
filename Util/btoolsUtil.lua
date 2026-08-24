@@ -102,6 +102,28 @@ function btools:SetCFrame(obj, cf)
 	return false
 end
 
+function btools:SetParent(obj,parent)
+	local remote = fetchRemote()
+	
+	if remote then
+		remote:InvokeServer("SetParent",{obj},parent)
+		return true
+	end
+	
+	return false
+end
+
+function btools:SetManyParents(obj,parent)
+	local remote = fetchRemote()
+
+	if remote then
+		remote:InvokeServer("SetParent",{obj},parent)
+		return true
+	end
+
+	return false
+end
+
 function btools:SetManyCollision(objs, state)
 	local remote = fetchRemote()
 
